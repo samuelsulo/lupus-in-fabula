@@ -1,6 +1,6 @@
 import { awakeRole, getPlayer, nightTargets, voteTargets } from "./game.ts";
 import { ROLES } from "./roles.ts";
-import type { GameEvent, GameState, Inspection, Phase, RoleId, Team } from "./types.ts";
+import type { GameEvent, GameState, Inspection, Narrator, Phase, RoleId, Team } from "./types.ts";
 
 export interface PublicPlayer {
   id: string;
@@ -21,14 +21,30 @@ export type PlayerAction =
     }
   | { kind: "vote"; targets: string[]; current: string | null | undefined };
 
+/** What the narrator sees on top of the public game: who is awake and what they chose. */
+export interface NarratorInfo {
+  awake: RoleId | null;
+  /** actor id -> target id, for the current night. */
+  picks: Record<string, string>;
+}
+
 /** Everything one player is allowed to know. This is the only thing sent to a client. */
 export interface PlayerView {
-  me: { id: string; role: RoleId; alive: boolean };
+  /** The role is null for the narrator, who plays none. */
+  me: { id: string; role: RoleId | null; alive: boolean };
+  narrator: Narrator | null;
+  /** Set only for the narrator. */
+  narratorInfo: NarratorInfo | null;
+  /** Players of the game, narrator excluded. */
   players: PublicPlayer[];
   phase: Phase;
   day: number;
   winner: Team | null;
   events: GameEvent[];
+  /** False when votes stay secret until the vote is over (the narrator still sees them). */
+  openVotes: boolean;
+  /** Who votes for whom right now (empty when votes are secret until the end). */
+  votes: Record<string, string | null>;
   /** Other werewolves, visible to werewolves only. */
   allies: string[];
   /** Seer inspection results, visible to the seer only. */
@@ -39,6 +55,7 @@ export interface PlayerView {
 }
 
 export function viewFor(state: GameState, playerId: string): PlayerView {
+  if (state.narrator?.id === playerId) return narratorView(state, state.narrator);
   const me = getPlayer(state, playerId);
   if (!me) throw new Error(`Unknown player ${playerId}`);
   const gameOver = state.phase === "GAME_OVER";
@@ -70,12 +87,18 @@ export function viewFor(state: GameState, playerId: string): PlayerView {
 
   return {
     me: { id: me.id, role: me.role, alive: me.alive },
-    players: state.players.map((p) => ({
-      id: p.id,
-      name: p.name,
-      alive: p.alive,
-      role: gameOver || (!p.alive && state.config.revealRoleOnDeath) || p.id === playerId ? p.role : null,
-    })),
+    narrator: state.narrator,
+    narratorInfo: null,
+    openVotes: state.config.openVotes,
+    votes: state.phase === "DAY_VOTE" && state.config.openVotes ? state.votes : {},
+    players: state.players
+      .filter((p) => p.id !== state.narrator?.id)
+      .map((p) => ({
+        id: p.id,
+        name: p.name,
+        alive: p.alive,
+        role: gameOver || (!p.alive && state.config.revealRoleOnDeath) || p.id === playerId ? p.role : null,
+      })),
     phase: state.phase,
     day: state.day,
     winner: state.winner,
@@ -86,5 +109,27 @@ export function viewFor(state: GameState, playerId: string): PlayerView {
     inspections: me.role === "seer" ? state.inspections.filter((i) => i.seerId === playerId) : [],
     asleep: state.phase === "NIGHT" && me.alive && awake !== me.role,
     action,
+  };
+}
+
+/** The narrator sees every role and every night choice. */
+function narratorView(state: GameState, narrator: Narrator): PlayerView {
+  return {
+    me: { id: narrator.id, role: null, alive: true },
+    narrator,
+    narratorInfo: { awake: awakeRole(state), picks: state.nightActions },
+    players: state.players
+      .filter((p) => p.id !== narrator.id)
+      .map((p) => ({ id: p.id, name: p.name, alive: p.alive, role: p.role })),
+    phase: state.phase,
+    day: state.day,
+    winner: state.winner,
+    events: state.events,
+    openVotes: true,
+    votes: state.phase === "DAY_VOTE" ? state.votes : {},
+    allies: [],
+    inspections: state.inspections,
+    asleep: false,
+    action: null,
   };
 }
