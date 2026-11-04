@@ -3,6 +3,20 @@ commit-msg:
     conventional-commit:
       run: cog verify --file {1}
 
+pre-commit:
+  commands:
+    lint:
+      glob: "*.{ts,vue,js}"
+      run: pnpm exec eslint --fix {staged_files}
+      stage_fixed: true
+    format:
+      glob: "*.{ts,vue,js,json,css,md,yml,yaml,html}"
+      run: pnpm exec prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+    type-check:
+      glob: "*.{ts,vue}"
+      run: pnpm type-check
+
 pre-push:
   commands:
     conventional-commits:

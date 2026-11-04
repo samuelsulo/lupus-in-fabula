@@ -56,8 +56,8 @@ in the file and section it belongs to, and link to it from elsewhere.
   `Co-Authored-By` trailers. The only exception is the name of this file,
   imposed by the tooling.
 - **Punctuation**: never use the em dash in any text in the repository. Use
-  comma, period, colon, semicolon, parentheses, or a short dash with spaces
-  (` - `) for asides.
+  comma, period, colon, semicolon, parentheses, or a short hyphen surrounded by
+  spaces for asides.
 - Commit messages in English, imperative mood, conforming to
   [Conventional Commits](https://www.conventionalcommits.org/)
   (`feat(core): add seer night action`).
