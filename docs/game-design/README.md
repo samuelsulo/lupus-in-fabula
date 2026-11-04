@@ -34,8 +34,8 @@ plugins and their night order is data driven. Presets per player count live in
 
 ## Voice rules
 
-| Phase | Who hears whom |
-|---|---|
+| Phase | Who hears whom                                                  |
+| ----- | --------------------------------------------------------------- |
 | Night | Only the roles currently awake; werewolves hear only werewolves |
-| Day | Everyone alive hears everyone alive |
-| Dead | Ghost channel the living cannot hear (or muted, configurable) |
+| Day   | Everyone alive hears everyone alive                             |
+| Dead  | Ghost channel the living cannot hear (or muted, configurable)   |

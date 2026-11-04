@@ -2,12 +2,12 @@
 
 ## Packages
 
-| Package | Responsibility |
-|---|---|
+| Package         | Responsibility                                                                                          |
+| --------------- | ------------------------------------------------------------------------------------------------------- |
 | `packages/core` | Pure TypeScript game logic: state machine, roles, rules. Deterministic (seeded RNG), no DOM, no network |
-| `packages/net` | Rooms, host/client protocol, state sync, voice routing |
-| `apps/web` | Vue 3 UI (lobby, overlays) and the three.js scene |
-| `content/` | Settings (themes) and role presets as JSON, validated by a schema |
+| `packages/net`  | Rooms, host/client protocol, state sync, voice routing                                                  |
+| `apps/web`      | Vue 3 UI (lobby, overlays) and the three.js scene                                                       |
+| `content/`      | Settings (themes) and role presets as JSON                                                              |
 
 ## Networking model
 

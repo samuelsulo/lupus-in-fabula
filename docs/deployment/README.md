@@ -10,9 +10,11 @@ In the repository settings: **Settings, Pages, Source: GitHub Actions**.
 
 ## How it is published
 
-A GitHub Actions workflow builds the site and publishes it with the official
-Pages actions after CI passes on `main`. No credentials are stored. The
-workflow is added together with the first application code.
+The workflow [`deploy-pages.yml`](../../.github/workflows/deploy-pages.yml) builds the
+site and publishes it with the official Pages actions, only after the CI workflow
+succeeded on a push to `main`. No credentials are stored: Pages uses the built-in
+token of the workflow. The Vite base path is set to `/<repo-name>/` through the
+`VITE_BASE` variable.
 
 ## Releases
 
