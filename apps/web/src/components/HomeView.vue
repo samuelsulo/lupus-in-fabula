@@ -92,6 +92,15 @@ function join(): void {
       </div>
 
       <p class="muted small">{{ t("common.headphones") }}</p>
+      <p class="muted small">
+        <strong>{{ t("help.title") }}</strong> {{ t("help.vpn") }}
+      </p>
+      <p class="muted small">
+        {{ t("home.beta") }}
+        <a href="https://github.com/samuelsulo/lupus-in-fabula/issues" target="_blank" rel="noopener">{{
+          t("home.betaLink")
+        }}</a>
+      </p>
 
       <label for="language">{{ t("home.language") }}</label>
       <select

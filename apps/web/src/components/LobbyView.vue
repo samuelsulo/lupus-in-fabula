@@ -104,6 +104,9 @@ function start(): void {
       <template v-else-if="snapshot.status === 'host-not-found'">
         <h2>{{ t("lobby.notFound") }}</h2>
         <p class="muted">{{ t("lobby.notFoundText", { code: snapshot.code }) }}</p>
+        <p class="help">
+          <strong>{{ t("help.title") }}</strong> {{ t("help.vpn") }}
+        </p>
         <button @click="$emit('leave')">{{ t("common.back") }}</button>
       </template>
 
@@ -356,6 +359,14 @@ function start(): void {
   padding: 0;
   margin: 0.6rem 0 0;
   color: var(--danger);
+  font-size: 0.9rem;
+}
+.help {
+  margin: 0.8rem 0;
+  padding: 0.6rem 0.8rem;
+  border-left: 4px solid var(--accent);
+  background: rgba(243, 167, 18, 0.08);
+  border-radius: 6px;
   font-size: 0.9rem;
 }
 .narrator-choice {

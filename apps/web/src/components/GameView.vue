@@ -171,6 +171,7 @@ function choose(target: string | null): void {
 function subtitleOf(p: PlayerView["players"][number]): string | null {
   const parts: string[] = [];
   if (p.role) parts.push(`${roleInfo(p.role).icon} ${roleInfo(p.role).label}`);
+  else if (p.notWerewolf) parts.push(t("game.notWolf"));
   const count = Object.values(props.view.votes).filter((target) => target === p.id).length;
   if (count > 0) parts.push(`🗳 ${count}`);
   return parts.length ? parts.join("  ") : null;
