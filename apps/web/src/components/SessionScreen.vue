@@ -15,7 +15,7 @@ const snapshot = useExternalStore(props.session.subscribe, props.session.getSnap
 
 <template>
   <GameView
-    v-if="snapshot.status === 'playing' && snapshot.view"
+    v-if="(snapshot.status === 'playing' || snapshot.status === 'reconnecting') && snapshot.view"
     :session="session"
     :snapshot="snapshot"
     :view="snapshot.view"

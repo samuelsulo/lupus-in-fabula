@@ -1,27 +1,19 @@
 import type { RoleId } from "@lupus/core";
+import { t } from "./i18n.ts";
 
-export const ROLE_INFO: Record<RoleId, { label: string; icon: string; description: string }> = {
-  werewolf: {
-    label: "Werewolf",
-    icon: "🐺",
-    description: "Each night, agree with the other werewolves on a victim. By day, blend in.",
-  },
-  villager: {
-    label: "Villager",
-    icon: "🧑‍🌾",
-    description: "You have no power but your voice and your vote. Find the werewolves.",
-  },
-  seer: {
-    label: "Seer",
-    icon: "🔮",
-    description: "Each night, learn whether one player is a werewolf.",
-  },
-  doctor: {
-    label: "Doctor",
-    icon: "⚕️",
-    description: "Each night, protect one player (yourself included) from the werewolves.",
-  },
+const ICONS: Record<RoleId, string> = {
+  werewolf: "🐺",
+  villager: "🧑‍🌾",
+  seer: "🔮",
+  doctor: "⚕️",
+  hunter: "🏹",
+  bodyguard: "🛡️",
 };
+
+/** Name, icon and description of a role, in the current language. */
+export function roleInfo(role: RoleId): { label: string; icon: string; description: string } {
+  return { icon: ICONS[role], label: t(`role.${role}.label`), description: t(`role.${role}.description`) };
+}
 
 /** Stable colours, indexed by seat so every client agrees. */
 export const PLAYER_COLORS = [

@@ -1,12 +1,22 @@
 <script setup lang="ts">
-import { generateRoomCode, normalizeRoomCode, Session, type RolePresets } from "@lupus/net";
-import { onBeforeUnmount, shallowRef } from "vue";
+import {
+  clearResume,
+  generateRoomCode,
+  loadResume,
+  normalizeRoomCode,
+  Session,
+  type ResumeInfo,
+  type RolePresets,
+} from "@lupus/net";
+import { onBeforeUnmount, ref, shallowRef } from "vue";
 import presetsJson from "@content/role-presets.json";
 import HomeView from "./components/HomeView.vue";
 import SessionScreen from "./components/SessionScreen.vue";
 
 const presets = presetsJson as RolePresets;
 const session = shallowRef<Session | null>(null);
+/** A game this browser was hosting when the page closed or reloaded. */
+const saved = ref<ResumeInfo | null>(loadResume());
 
 function roomCodeFromUrl(): string {
   return normalizeRoomCode(location.hash.replace(/^#\/?/, ""));
@@ -18,9 +28,28 @@ function enter(name: string, code: string | null): void {
   session.value = new Session({ code: roomCode, name, isHost: code === null, presets });
 }
 
+function resumeGame(): void {
+  const info = saved.value;
+  if (!info) return;
+  location.hash = `/${info.code}`;
+  session.value = new Session({
+    code: info.code,
+    name: info.name,
+    isHost: true,
+    presets,
+    resume: info.snapshot,
+  });
+}
+
+function discardSaved(): void {
+  clearResume();
+  saved.value = null;
+}
+
 function leave(): void {
   session.value?.leave();
   session.value = null;
+  saved.value = loadResume();
   location.hash = "";
 }
 
@@ -31,8 +60,11 @@ onBeforeUnmount(() => session.value?.leave());
   <HomeView
     v-if="!session"
     :initial-code="roomCodeFromUrl()"
+    :resume="saved"
     @create="(name) => enter(name, null)"
     @join="enter"
+    @resume="resumeGame"
+    @discard="discardSaved"
   />
   <SessionScreen v-else :session="session" @leave="leave" />
 </template>

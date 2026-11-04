@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { normalizeRoomCode } from "@lupus/net";
+import { normalizeRoomCode, type ResumeInfo } from "@lupus/net";
 import { computed, ref } from "vue";
+import { LOCALES, locale, setLocale, t, type Locale } from "../i18n.ts";
 
-const props = defineProps<{ initialCode: string }>();
-const emit = defineEmits<{ create: [name: string]; join: [name: string, code: string] }>();
+const props = defineProps<{ initialCode: string; resume: ResumeInfo | null }>();
+const emit = defineEmits<{
+  create: [name: string];
+  join: [name: string, code: string];
+  resume: [];
+  discard: [];
+}>();
 
 function storedName(): string {
   try {
@@ -41,20 +47,38 @@ function join(): void {
   <main class="home">
     <section class="panel card">
       <h1>🐺 Lupus in Fabula</h1>
-      <p class="muted">
-        Werewolf in 3D for 4 to 10 players. Peer-to-peer, no accounts, no server: share a room code and talk.
-      </p>
+      <p class="muted">{{ t("home.tagline") }}</p>
 
-      <label for="name">Your name</label>
-      <input id="name" v-model="name" maxlength="20" autocomplete="nickname" placeholder="e.g. Sam" />
-
-      <div class="row">
-        <button class="primary" :disabled="!canContinue" @click="create">Create a room</button>
+      <div v-if="resume" class="resume" role="status">
+        <p>
+          <strong>{{ t("home.resume.title", { code: resume.code }) }}</strong
+          ><br />
+          <span class="muted">{{ t("home.resume.help", { day: resume.day }) }}</span>
+        </p>
+        <div class="row">
+          <button class="primary" @click="emit('resume')">{{ t("home.resume.button") }}</button>
+          <button @click="emit('discard')">{{ t("home.resume.discard") }}</button>
+        </div>
       </div>
 
-      <div class="divider"><span>or join your friends</span></div>
+      <label for="name">{{ t("home.name") }}</label>
+      <input
+        id="name"
+        v-model="name"
+        maxlength="20"
+        autocomplete="nickname"
+        :placeholder="t('home.namePlaceholder')"
+      />
 
-      <label for="code">Room code</label>
+      <div class="row">
+        <button class="primary" :disabled="!canContinue" @click="create">{{ t("home.create") }}</button>
+      </div>
+
+      <div class="divider">
+        <span>{{ t("home.or") }}</span>
+      </div>
+
+      <label for="code">{{ t("home.code") }}</label>
       <div class="row">
         <input
           id="code"
@@ -64,10 +88,19 @@ function join(): void {
           placeholder="ABCDE"
           @keyup.enter="canContinue && normalizedCode && join()"
         />
-        <button :disabled="!canContinue || !normalizedCode" @click="join">Join</button>
+        <button :disabled="!canContinue || !normalizedCode" @click="join">{{ t("home.join") }}</button>
       </div>
 
-      <p class="muted small">🎧 Use headphones, otherwise the voice chat will echo.</p>
+      <p class="muted small">{{ t("common.headphones") }}</p>
+
+      <label for="language">{{ t("home.language") }}</label>
+      <select
+        id="language"
+        :value="locale"
+        @change="setLocale(($event.target as HTMLSelectElement).value as Locale)"
+      >
+        <option v-for="option in LOCALES" :key="option.id" :value="option.id">{{ option.label }}</option>
+      </select>
     </section>
   </main>
 </template>
@@ -78,7 +111,7 @@ function join(): void {
   display: grid;
   place-items: center;
   padding: 1rem;
-  background: radial-gradient(circle at 50% 20%, #1c2540, #0a0d14 70%);
+  background: var(--cabin-backdrop);
 }
 .card {
   width: min(440px, 100%);
@@ -89,7 +122,8 @@ label {
   font-size: 0.85rem;
   color: var(--muted);
 }
-input {
+input,
+select {
   width: 100%;
 }
 .row {
@@ -99,6 +133,16 @@ input {
 }
 .row .primary {
   width: 100%;
+}
+.resume {
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: rgba(243, 167, 18, 0.1);
+}
+.resume p {
+  margin: 0;
 }
 .divider {
   text-align: center;
