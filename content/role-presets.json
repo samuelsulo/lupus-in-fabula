@@ -1,0 +1,20 @@
+{
+  "4": ["werewolf", "seer", "doctor", "villager"],
+  "5": ["werewolf", "seer", "doctor", "villager", "villager"],
+  "6": ["werewolf", "werewolf", "seer", "doctor", "villager", "villager"],
+  "7": ["werewolf", "werewolf", "seer", "doctor", "villager", "villager", "villager"],
+  "8": ["werewolf", "werewolf", "seer", "doctor", "villager", "villager", "villager", "villager"],
+  "9": ["werewolf", "werewolf", "werewolf", "seer", "doctor", "villager", "villager", "villager", "villager"],
+  "10": [
+    "werewolf",
+    "werewolf",
+    "werewolf",
+    "seer",
+    "doctor",
+    "villager",
+    "villager",
+    "villager",
+    "villager",
+    "villager"
+  ]
+}
