@@ -32,12 +32,21 @@ Works on desktop and on phones held sideways.
 
 ## Roadmap
 
-- Medium role (needs roles to stay hidden after death).
+- Medium role (roles now stay hidden after death, so it makes sense).
 - More roles (possessed, mason, hamster werewolf, thief) and more settings
   (themes) defined as data.
 - Smoother recovery: today a returning host or a narrator takeover shows a few
   seconds of "connection lost", and a game with no narrator and no returning
   host ends.
+
+## Known issues (beta)
+
+- A **VPN** (NordVPN and similar) or a strict network can block the peer-to-peer
+  connection. Turn the VPN off for the page, or exclude the browser from it, and
+  switch off any WebRTC protection. A relay (TURN) server is not configured yet.
+- Without a human narrator and without the host coming back, the game ends when
+  the host leaves. See the [architecture notes](./docs/architecture/README.md).
+- Tested in Chrome; not yet on real phones.
 
 ## Getting started
 

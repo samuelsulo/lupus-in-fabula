@@ -19,15 +19,14 @@ LOBBY -> ROLE_REVEAL -> NIGHT (ordered steps) -> DAWN -> DAY_DISCUSSION
   default votes are open (everyone sees who votes for whom, live); the result
   always lists them.
 - **Day**: everyone alive discusses, then votes. Plurality eliminates; a tie
-  means no elimination (configurable). Whether the role of the dead is
-  revealed is configurable.
+  means no elimination (configurable). What the dead reveal is limited (see below).
 - **Victory**: villagers win when all werewolves are dead. Werewolves win when
   they are at least as many as the others.
 
 ## Roles
 
 Available: Werewolf, Villager, Seer, Doctor, Hunter, Bodyguard. Planned later:
-Medium (only meaningful once roles are no longer revealed on death), Possessed,
+Medium (now meaningful, since roles stay hidden after death), Possessed,
 Mason, Hamster werewolf, Thief.
 
 - **Hunter**: when killed (at night or by vote) takes a last shot at a living
@@ -49,6 +48,15 @@ the room (the host included) and takes no seat in the game, so 4 to 10 other
 players are needed. With a human narrator there are no timers: steps, the
 discussion and the vote last until the narrator presses "Next". The narrator
 sees every role and every night choice.
+
+## What the dead reveal
+
+Somebody killed in the night reveals nothing: not their role, not even that they
+had one that matters. When the village **votes somebody out**, only one fact
+comes out: a werewolf is shown as a werewolf, anybody else is shown as "not a
+werewolf". Everything is revealed at the end of the game. The bodyguard's
+sacrifice looks like any other night kill. The hunter is the exception: the last
+shot is public, so everybody learns who the hunter was.
 
 ## Role setup
 
