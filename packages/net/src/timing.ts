@@ -8,5 +8,6 @@ export const PHASE_SECONDS: Record<Phase, number | null> = {
   DAY_DISCUSSION: 120,
   DAY_VOTE: 40,
   ELIMINATION: 8,
+  HUNTER_SHOT: 20,
   GAME_OVER: null,
 };

@@ -3,7 +3,8 @@ import type { Room } from "trystero";
 export interface VoiceState {
   micEnabled: boolean;
   muted: boolean;
-  error: string | null;
+  /** Set when the microphone could not be opened. The UI words it in the player's language. */
+  error: "mic-unavailable" | null;
 }
 
 /**
@@ -13,7 +14,7 @@ export interface VoiceState {
 export class VoiceController {
   private stream: MediaStream | null = null;
   private muted = false;
-  private error: string | null = null;
+  private error: VoiceState["error"] = null;
   private speakTo = new Set<string>();
   private hearFrom = new Set<string>();
   private sentTo = new Set<string>();
@@ -39,6 +40,8 @@ export class VoiceController {
       this.stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           deviceId: deviceId ? { exact: deviceId } : undefined,
+          // Speech only needs one channel: half the audio data on every connection.
+          channelCount: 1,
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
@@ -51,7 +54,7 @@ export class VoiceController {
       this.syncOutgoing();
     } catch {
       this.stream = null;
-      this.error = "Microphone unavailable. Check the browser permissions.";
+      this.error = "mic-unavailable";
     }
     this.emit();
   }
