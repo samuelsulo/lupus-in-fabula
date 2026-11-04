@@ -1,5 +1,5 @@
 tag_prefix = "v"
 scopes = ["core", "net", "web", "content", "docs", "ci", "repo", "deps", "version"]
 post_bump_hooks = [
-  "git push origin HEAD && git push origin v{{version}} && gh release create v{{version}} --title \"v{{version}}\" --notes \"$(awk '/^## v{{version}}/{f=1;next}/^- - -/{if(f)exit}f' CHANGELOG.md)\"",
+  "git push origin HEAD && git push origin v{{version}} && gh release create v{{version}} $(case \"{{version}}\" in *-*) echo --prerelease;; esac) --title \"v{{version}}\" --notes \"$(awk '/^## v{{version}}/{f=1;next}/^- - -/{if(f)exit}f' CHANGELOG.md)\"",
 ]
