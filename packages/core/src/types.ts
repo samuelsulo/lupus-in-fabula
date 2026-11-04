@@ -13,8 +13,6 @@ export type Phase =
   | "GAME_OVER";
 
 export interface GameConfig {
-  /** Reveal the role of a player when they die. Roles are always revealed at game over. */
-  revealRoleOnDeath: boolean;
   /** Show who votes for whom while the vote is open. Always shown once it is over. */
   openVotes: boolean;
 }

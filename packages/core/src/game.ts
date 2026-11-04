@@ -24,7 +24,7 @@ export interface NewGameOptions {
   config?: Partial<GameConfig>;
 }
 
-export const DEFAULT_CONFIG: GameConfig = { revealRoleOnDeath: true, openVotes: true };
+export const DEFAULT_CONFIG: GameConfig = { openVotes: true };
 
 export const MIN_PLAYERS = 4;
 export const MAX_PLAYERS = 10;

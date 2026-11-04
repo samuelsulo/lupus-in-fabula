@@ -123,3 +123,52 @@ describe("ghost channel", () => {
     }
   });
 });
+
+describe("what the dead reveal", () => {
+  const publicRole = (s: ReturnType<typeof game>, id: string) =>
+    viewFor(s, "p5").players.find((p) => p.id === id);
+
+  it("keeps the role of somebody killed in the night secret", () => {
+    const s = game();
+    const victim = s.players.find((p) => p.role === "seer" && p.id !== "p5")?.id ?? "p2";
+    const killed = {
+      ...s,
+      players: s.players.map((p) => (p.id === victim ? { ...p, alive: false } : p)),
+      events: [{ type: "death" as const, day: 1, playerId: victim, cause: "werewolves" as const }],
+    };
+    const seen = publicRole(killed, victim);
+    expect(seen?.alive).toBe(false);
+    expect(seen?.role).toBeNull();
+    expect(seen?.notWerewolf).toBe(false);
+  });
+
+  it("shows only the werewolf when the village votes one out", () => {
+    const s = game();
+    const wolf = s.players.find((p) => p.role === "werewolf" && p.id !== "p5")?.id ?? "p0";
+    const out = {
+      ...s,
+      players: s.players.map((p) => (p.id === wolf ? { ...p, alive: false } : p)),
+      events: [{ type: "death" as const, day: 1, playerId: wolf, cause: "vote" as const }],
+    };
+    expect(publicRole(out, wolf)?.role).toBe("werewolf");
+  });
+
+  it("only says 'not a werewolf' when the village votes out an innocent", () => {
+    const s = game();
+    const innocent = s.players.find((p) => p.role === "doctor" && p.id !== "p5")?.id ?? "p3";
+    const out = {
+      ...s,
+      players: s.players.map((p) => (p.id === innocent ? { ...p, alive: false } : p)),
+      events: [{ type: "death" as const, day: 1, playerId: innocent, cause: "vote" as const }],
+    };
+    const seen = publicRole(out, innocent);
+    expect(seen?.role).toBeNull();
+    expect(seen?.notWerewolf).toBe(true);
+    expect(JSON.stringify(viewFor(out, "p5"))).not.toContain('"doctor"');
+  });
+
+  it("reveals everybody at the end of the game", () => {
+    const over = { ...game(), phase: "GAME_OVER" as const };
+    expect(viewFor(over, "p5").players.every((p) => p.role !== null)).toBe(true);
+  });
+});

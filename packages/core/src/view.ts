@@ -6,8 +6,13 @@ export interface PublicPlayer {
   id: string;
   name: string;
   alive: boolean;
-  /** Only set when the role is public (revealed on death, or at game over). */
+  /**
+   * Only set when the role is public: your own, everybody's at game over, and a werewolf the
+   * village voted out. Roles stay hidden when somebody dies in the night.
+   */
   role: RoleId | null;
+  /** True for a player the village voted out who was not a werewolf (the only thing it learns). */
+  notWerewolf: boolean;
 }
 
 export type PlayerAction =
@@ -59,6 +64,9 @@ export function viewFor(state: GameState, playerId: string): PlayerView {
   const me = getPlayer(state, playerId);
   if (!me) throw new Error(`Unknown player ${playerId}`);
   const gameOver = state.phase === "GAME_OVER";
+  const votedOut = new Set(
+    state.events.flatMap((e) => (e.type === "death" && e.cause === "vote" ? [e.playerId] : [])),
+  );
   const isWolf = me.role === "werewolf";
   const awake = awakeRole(state);
 
@@ -97,7 +105,8 @@ export function viewFor(state: GameState, playerId: string): PlayerView {
         id: p.id,
         name: p.name,
         alive: p.alive,
-        role: gameOver || (!p.alive && state.config.revealRoleOnDeath) || p.id === playerId ? p.role : null,
+        role: gameOver || p.id === playerId || (votedOut.has(p.id) && p.role === "werewolf") ? p.role : null,
+        notWerewolf: votedOut.has(p.id) && p.role !== "werewolf",
       })),
     phase: state.phase,
     day: state.day,
@@ -120,7 +129,7 @@ function narratorView(state: GameState, narrator: Narrator): PlayerView {
     narratorInfo: { awake: awakeRole(state), picks: state.nightActions },
     players: state.players
       .filter((p) => p.id !== narrator.id)
-      .map((p) => ({ id: p.id, name: p.name, alive: p.alive, role: p.role })),
+      .map((p) => ({ id: p.id, name: p.name, alive: p.alive, role: p.role, notWerewolf: false })),
     phase: state.phase,
     day: state.day,
     winner: state.winner,
