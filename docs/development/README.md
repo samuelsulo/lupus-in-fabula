@@ -31,6 +31,12 @@ Open several browser windows (use separate profiles or private windows) on the d
 server: one creates a room, the others join with the code. The peers connect through
 public relays even on localhost. Use at least 4 windows to start a game.
 
+## Trying the phone layout
+
+In the browser developer tools, switch on device emulation and pick a phone in
+landscape (for example 844 by 390): panels fold into the top bar and the room
+fills the screen. In portrait on a touch device the game asks to turn the phone.
+
 ## Conventions
 
 Commit format, naming and language rules are defined once in

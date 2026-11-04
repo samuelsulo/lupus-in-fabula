@@ -9,22 +9,32 @@ version `v` (currently `1`) and a `type`. The schemas live in
 Validated at runtime with zod: the host never trusts a client. Invalid, unknown or
 out-of-phase messages are dropped.
 
-| Type     | Payload                                                                     | Meaning                                                                                |
-| -------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `hello`  | `name`                                                                      | A guest asks to join the lobby. Sent to every peer that appears; only the host answers |
-| `intent` | `night-action` with `target`, or `vote` with `target` (nullable to abstain) | A player's action. The game rules decide if it is valid                                |
+| Type      | Payload                                                                                | Meaning                                                                                       |
+| --------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `hello`   | `name`                                                                                 | A guest asks to join the lobby. Sent to every peer that appears; only the host answers        |
+| `intent`  | `night-action` with `target`, or `vote` with `target` (nullable to abstain)            | A player's action. The game rules decide if it is valid                                       |
+| `move`    | `to`: `{ kind: "seat", seat }` or `{ kind: "stand", x, z }`                            | Sit on a free seat or walk to a spot. Ignored at night and out of the game                    |
+| `setup`   | `op`: `mode` (`random` or `custom`), `assign` (`playerId`, `role` or null), `generate` | The human narrator sets up the roles in the lobby. Ignored from anybody else                  |
+| `chat`    | `text` (max 200 characters)                                                            | A chat message, relayed only to who could hear you. One per half second                       |
+| `advance` | none                                                                                   | Moves the game on. Honoured only from the human narrator, or from the host when there is none |
 
 ## Host to clients
 
-| Type       | Payload                          | Meaning                                                            |
-| ---------- | -------------------------------- | ------------------------------------------------------------------ |
-| `lobby`    | `hostId`, `players`, `voice`     | Current lobby. Guests pin the sender as host on the first one      |
-| `view`     | `view`, `voice`, `phaseEndsInMs` | The game as one player may see it, plus the time left in the phase |
-| `rejected` | `reason`                         | The join was refused (`game-in-progress`, `room-full`)             |
+| Type       | Payload                                                               | Meaning                                                                                                |
+| ---------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `lobby`    | `hostId`, `narratorId`, `rolesMode`, `rolesReady`, `players`, `voice` | Current lobby (`narratorId` is null in automatic mode). Guests pin the sender as host on the first one |
+| `view`     | `view`, `voice`, `phaseEndsInMs`                                      | The game as one player may see it, plus the time left in the phase                                     |
+| `roles`    | `assignment`, `errors`                                                | Only to the human narrator in a custom setup: who plays what, and what is wrong with it                |
+| `seating`  | `seating`                                                             | Where every player sits or stands. Sent when the game starts and on every change                       |
+| `chat`     | `from`, `text`                                                        | A chat message the player is allowed to read                                                           |
+| `snapshot` | `snapshot`                                                            | Only to the human narrator: the full game, so they can take over as host                               |
+| `host`     | `hostId`                                                              | The narrator took over as host. Believed only when sent by the narrator                                |
+| `rejected` | `reason`                                                              | The join was refused (`game-in-progress`, `room-full`)                                                 |
 
 `view` is the only game information a client ever receives: its own role, the roles
 that are public, role-specific knowledge (the pack for werewolves, inspections for
-the seer) and the action it may take now. See `viewFor` in
+the seer) and the action it may take now. The human narrator gets a view with every
+role and the current night picks, and no action. See `viewFor` in
 [`packages/core`](../../packages/core/src/view.ts).
 
 ## Voice permissions

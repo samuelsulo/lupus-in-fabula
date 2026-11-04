@@ -2,28 +2,42 @@
 
 A browser-based 3D version of the classic social deduction game (Werewolf /
 Mafia), for 4 to 10 players. Fully peer-to-peer: no game server, no install,
-no accounts. Share a room code, sit in the circle, and talk.
-
-> Early version: a full game (lobby, roles, night, day, vote, voice) works between browsers.
-> Automatic narrator only, four roles, one setting. See the roadmap below.
+no accounts. Share a room code, sit by the fire in a cozy log cabin, and talk.
+Works on desktop and on phones held sideways.
 
 ## Features
 
-- Players sit on chairs in a circle in a low-poly 3D scene, with day and night
-  cycles.
-- Phase-aware voice chat: at night only the awake roles hear each other, the dead
-  cannot be heard by the living.
-- Automatic narrator with timers (the host can skip them).
-- Roles: werewolf, villager, seer, doctor.
+- **A cozy 3D cabin**: a fireplace, a rug, sofas, armchairs, chairs and a
+  stool. Daylight through the windows, firelight at night. Players can stand
+  up, walk around and sit somewhere else.
+- **Phase-aware voice and text chat**: at night only the awake roles (and the
+  narrator) hear each other; the dead have a ghost channel of their own.
+- **Two narrators**: an automatic one (timers, spoken lines, host can skip), or
+  a human narrator who sees everything, wakes the roles and talks to them in
+  private. The narrator can choose who plays which role, with validity checks.
+- **Survives disconnections**: if the narrator leaves, a dead player or the
+  automatic narrator takes over; if the host reloads, the game resumes; if the
+  host disappears, the human narrator takes over.
+- **Roles**: werewolf, villager, seer, doctor, hunter, bodyguard.
+- **Easy to follow**: a big phase title with a colour and icon, a one-line
+  "what to do now" for every player, a banner on each change of scene, a
+  role card at the start, and a live board of who votes for whom.
+- **Sound**: crackling fire, crickets and a howl at night, synthesised in the
+  browser (no audio files).
+- **English and Italian**, chosen on the home screen.
+- **Light on resources**: 30 frames per second, shadows redrawn only when
+  somebody moves, shared geometry, and no message sent twice.
 - Hidden information is never broadcast: each player only receives their own view.
 - Runs on static hosting (GitHub Pages), peer-to-peer over WebRTC.
 
 ## Roadmap
 
-- Human narrator mode.
-- More roles (hunter, medium, bodyguard, possessed, mason).
-- More settings (themes) defined as data, and sound.
-- Reconnection of players, host migration.
+- Medium role (needs roles to stay hidden after death).
+- More roles (possessed, mason, hamster werewolf, thief) and more settings
+  (themes) defined as data.
+- Smoother recovery: today a returning host or a narrator takeover shows a few
+  seconds of "connection lost", and a game with no narrator and no returning
+  host ends.
 
 ## Getting started
 
