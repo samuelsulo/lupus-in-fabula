@@ -1,0 +1,9 @@
+commit-msg:
+  commands:
+    conventional-commit:
+      run: cog verify --file {1}
+
+pre-push:
+  commands:
+    conventional-commits:
+      run: cog check

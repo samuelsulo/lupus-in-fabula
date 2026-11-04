@@ -1,0 +1,7 @@
+[tools]
+lefthook = "1"
+cocogitto = "6"
+gh = "2"
+gitleaks = "8"
+node = "24"
+pnpm = "10"

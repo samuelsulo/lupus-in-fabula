@@ -1,0 +1,23 @@
+name: Commits
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: commits-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cog-check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: cocogitto/cocogitto-action@v4
+        with:
+          command: check
+          args: --ignore-merge-commits
