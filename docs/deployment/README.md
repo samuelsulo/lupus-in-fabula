@@ -37,9 +37,16 @@ A secret only keeps the login out of the repository and the CI logs: it still
 ends up in the public bundle, because a static site cannot hide it. Use a free
 plan without a card, so the worst case is an exhausted quota. Traffic through
 the relay stays encrypted end to end. For a local build, set `VITE_TURN_URLS`,
-`VITE_TURN_USERNAME` and `VITE_TURN_CREDENTIAL` instead. Redeploy after changing them.
+`VITE_TURN_USERNAME` and `VITE_TURN_CREDENTIAL` instead. The values are read at
+build time: publish a new release after changing them.
 
 ## Releases
 
-Versions and the changelog are managed with cocogitto: `cog bump --auto`
-creates the `vX.Y.Z` tag and the GitHub release (see [`cog.toml`](../../cog.toml)).
+Versions and the changelog are managed with cocogitto (see
+[`cog.toml`](../../cog.toml)). `cog bump --auto` picks the next version; for a
+pre-release set it explicitly, e.g. `cog bump --version 0.1.0-beta.5`
+(`--pre` also needs a bump kind). The command creates the version commit and
+the `vX.Y.Z` tag, pushes both and creates the GitHub release, marked as a
+pre-release when the version has a suffix. Pushing the tag is what starts the
+deploy: wait for the CI of `main` to be green first, because the deploy does not
+check it.

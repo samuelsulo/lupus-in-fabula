@@ -31,7 +31,12 @@ categories.
 - Hosting is GitHub Pages only. No paid services, no AWS, no backend.
 - No analytics, tracking, accounts or cookies beyond what is strictly needed.
   No personal data leaves the players' browsers.
-- No credentials or secrets in the repository or in CI.
+- No credentials or secrets in the repository or in CI. The one exception is
+  the login of a free-tier TURN relay: it is stored as GitHub Actions secrets
+  and a variable (`TURN_USERNAME`, `TURN_CREDENTIAL`, `TURN_URLS`), never in
+  the repository, and it still ends up in the public bundle (see
+  [deployment](./docs/deployment/README.md)). Use a plan without a card, so
+  the worst case is an exhausted quota.
 - Hidden information (roles, night actions) is never broadcast: the host sends
   each client only what that player may know.
 

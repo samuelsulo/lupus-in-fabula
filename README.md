@@ -43,9 +43,10 @@ Works on desktop and on phones held sideways.
 
 - A **VPN** (NordVPN and similar) or a strict network can block the peer-to-peer
   connection. Turn the VPN off for the page, or exclude the browser from it, and
-  switch off any WebRTC protection. If a relay (TURN) server is configured
-  (see [deployment](./docs/deployment/README.md)) it is used when a direct
-  connection fails.
+  switch off any WebRTC protection. From `v0.1.0-beta.4` a free relay (TURN)
+  server is used when a direct connection fails (see
+  [deployment](./docs/deployment/README.md)); its monthly quota is small, and
+  a VPN can still block it.
 - Without a human narrator and without the host coming back, the game ends when
   the host leaves. See the [architecture notes](./docs/architecture/README.md).
 - Tested in Chrome; not yet on real phones.
