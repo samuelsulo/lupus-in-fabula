@@ -2,6 +2,47 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v0.1.0-beta.3 - 2026-11-05
+#### Features
+- (**net**) support optional TURN relay servers - (56b5753) - Samuel Sulo
+#### Continuous Integration
+- deploy to GitHub Pages only when a version tag is pushed - (a7a39f4) - Samuel Sulo
+
+- - -
+
+## v0.1.0-beta.2 - 2026-11-05
+#### Features
+- (**core**) reveal only a werewolf voted out, keep night deaths secret - (3fa0816) - Samuel Sulo
+- (**web**) show a voted-out player as not a werewolf and add connection help - (d18cf76) - Samuel Sulo
+#### Documentation
+- describe what the dead reveal and list the beta known issues - (ceba4f6) - Samuel Sulo
+#### Miscellaneous Chores
+- (**version**) v0.1.0-beta.2 - (f573a84) - Samuel Sulo
+
+- - -
+
+## v0.1.0-beta.1 - 2026-11-05
+#### Features
+- (**content**) add role presets for 4 to 10 players - (0a8b859) - Samuel Sulo
+- (**core**) add hunter, bodyguard, role validation, seating and narrator handover - (f9b73cc) - Samuel Sulo
+- (**core**) add game state machine with werewolf, villager, seer and doctor - (aaf980c) - Samuel Sulo
+- (**net**) add human narrator, chat, walking, role setup and host recovery - (18329a7) - Samuel Sulo
+- (**net**) add host engine, protocol and voice routing over WebRTC - (b8c77f6) - Samuel Sulo
+- (**web**) add cozy cabin scene, clearer game screens, sound, chat and mobile layout - (c3a66df) - Samuel Sulo
+- (**web**) add lobby, 3D village circle and game screens - (4acbdc0) - Samuel Sulo
+#### Documentation
+- describe the cabin, narrator modes, roles, recovery and phone layout - (8af7272) - Samuel Sulo
+- document protocol, development and deployment - (c5fb6d1) - Samuel Sulo
+#### Continuous Integration
+- (**repo**) publish versions with a suffix as GitHub pre-releases - (7e76f54) - Samuel Sulo
+- add checks and GitHub Pages deploy workflows - (a458f5f) - Samuel Sulo
+#### Miscellaneous Chores
+- (**repo**) add pnpm workspace with typescript, eslint, prettier and hooks - (a5bba88) - Samuel Sulo
+- (**repo**) initialize repository - (7bcf390) - Samuel Sulo
+- (**version**) v0.1.0-beta.1 - (88eddc7) - Samuel Sulo
+
+- - -
+
 ## v0.1.0-beta.2 - 2026-11-04
 #### Features
 - (**core**) reveal only a werewolf voted out, keep night deaths secret - (3fa0816) - Samuel Sulo
