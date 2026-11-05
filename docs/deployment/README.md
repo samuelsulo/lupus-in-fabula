@@ -6,14 +6,18 @@ microphone access).
 
 ## One-time setup
 
-In the repository settings: **Settings, Pages, Source: GitHub Actions**.
+In the repository settings: **Settings, Pages, Source: GitHub Actions**. Then
+**Settings, Environments, github-pages, Deployment branches and tags**: allow
+the tag pattern `v*`, otherwise the deploy of a tag is rejected.
 
 ## How it is published
 
 The workflow [`deploy-pages.yml`](../../.github/workflows/deploy-pages.yml) builds the
-site and publishes it with the official Pages actions, only after the CI workflow
-succeeded on a push to `main`. No credentials are stored: Pages uses the built-in
-token of the workflow. The Vite base path is set to `/<repo-name>/` through the
+site and publishes it with the official Pages actions, only when a version tag
+(`vX.Y.Z`, created by `cog bump`) is pushed: a push to `main` alone does not
+deploy. The tag is pushed after `main`, whose CI has already run on the same
+commit. Pages uses the built-in token of the workflow, so no credentials are
+stored. The Vite base path is set to `/<repo-name>/` through the
 `VITE_BASE` variable.
 
 ## Relay (TURN) server
