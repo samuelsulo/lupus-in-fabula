@@ -5,6 +5,8 @@ Mafia), for 4 to 10 players. Fully peer-to-peer: no game server, no install,
 no accounts. Share a room code, sit by the fire in a cozy log cabin, and talk.
 Works on desktop and on phones held sideways.
 
+**Play it: <https://samuelsulo.github.io/lupus-in-fabula/>**
+
 ## Features
 
 - **A cozy 3D cabin**: a fireplace, a rug, sofas, armchairs, chairs and a
