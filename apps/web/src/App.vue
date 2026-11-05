@@ -12,6 +12,7 @@ import { onBeforeUnmount, ref, shallowRef } from "vue";
 import presetsJson from "@content/role-presets.json";
 import HomeView from "./components/HomeView.vue";
 import SessionScreen from "./components/SessionScreen.vue";
+import { turnServers } from "./turn.ts";
 
 const presets = presetsJson as RolePresets;
 const session = shallowRef<Session | null>(null);
@@ -25,7 +26,7 @@ function roomCodeFromUrl(): string {
 function enter(name: string, code: string | null): void {
   const roomCode = code ?? generateRoomCode();
   location.hash = `/${roomCode}`;
-  session.value = new Session({ code: roomCode, name, isHost: code === null, presets });
+  session.value = new Session({ code: roomCode, name, isHost: code === null, presets, turnServers });
 }
 
 function resumeGame(): void {
@@ -38,6 +39,7 @@ function resumeGame(): void {
     isHost: true,
     presets,
     resume: info.snapshot,
+    turnServers,
   });
 }
 

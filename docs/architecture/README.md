@@ -70,7 +70,8 @@ The game barely moves, so the client spends as little as it can:
 
 ## Known limits
 
-- Strict NATs (about 10-15% of connections) may need a TURN server.
+- Strict NATs (about 10-15% of connections) need a TURN server; see
+  [deployment](../deployment/README.md) for configuring one.
 - In automatic narrator mode the host can technically read the full state.
 - With a human narrator who is not the host, the host machine still holds the full state.
 - A returning host or a narrator takeover is not seamless: players see "connection lost" for a few seconds.

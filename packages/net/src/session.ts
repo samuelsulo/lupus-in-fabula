@@ -142,6 +142,13 @@ export interface SessionSnapshot {
   rejected: RejectReason | null;
 }
 
+/** A relay (TURN) server, used when two players cannot connect directly. */
+export interface TurnServer {
+  urls: string[];
+  username: string;
+  credential: string;
+}
+
 export interface SessionOptions {
   code: string;
   name: string;
@@ -149,6 +156,8 @@ export interface SessionOptions {
   presets: RolePresets;
   /** A saved game to pick up again as its host (after a reload). */
   resume?: HostSnapshot;
+  /** Optional relay servers for networks that block direct connections. */
+  turnServers?: TurnServer[];
 }
 
 /**
@@ -171,7 +180,10 @@ export class Session {
   private nextChatId = 1;
 
   constructor(private readonly options: SessionOptions) {
-    this.room = joinRoom({ appId: APP_ID }, options.code);
+    this.room = joinRoom(
+      options.turnServers?.length ? { appId: APP_ID, turnConfig: options.turnServers } : { appId: APP_ID },
+      options.code,
+    );
     this.voice = new VoiceController(this.room);
     const action = this.room.makeAction<never>("msg");
     this.send = (message, target) => {
