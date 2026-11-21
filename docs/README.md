@@ -7,3 +7,4 @@
 | [`protocol/`](./protocol/README.md)         | Messages exchanged between host and clients       |
 | [`deployment/`](./deployment/README.md)     | GitHub Pages deployment and releases              |
 | [`development/`](./development/README.md)   | Local setup, tooling, conventions in practice     |
+| [`working-method.md`](./working-method.md)  | Plan to pull request, git strategy, minimum checks |

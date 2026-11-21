@@ -14,9 +14,8 @@ everything else refers to it.
 ## 1. Repository Structure
 
 Top-level folders are fixed: `packages/`, `apps/`, `content/`, `docs/`,
-`.github/`. Do not rename or move them. Add content inside the existing
-`docs/` subfolders; flag it first before adding new top-level documentation
-categories.
+`.github/`. Do not rename or move them. The structure of `docs/` follows the
+needs of the project.
 
 - `packages/core`: pure game logic, no DOM, no network, no three.js.
 - `packages/net`: rooms, host/client protocol, state sync, voice routing.
@@ -54,6 +53,9 @@ in the file and section it belongs to, and link to it from elsewhere.
 
 ## 5. General Conventions
 
+- **Workflow**: plan with the AI agent, turn the plan into issues, solve each
+  issue with its own pull request that closes it. See
+  [`docs/working-method.md`](./docs/working-method.md).
 - **Language**: English for everything in the repository: code, comments,
   configuration, commit messages, Markdown files.
 - **No reference to the generative AI tool used for development**, in code,
@@ -66,7 +68,8 @@ in the file and section it belongs to, and link to it from elsewhere.
 - Commit messages in English, imperative mood, conforming to
   [Conventional Commits](https://www.conventionalcommits.org/)
   (`feat(core): add seer night action`).
-- File and folder names in kebab-case.
+- File and folder names: prefer kebab-case, unless the language or framework
+  has its own convention, which is then followed.
 - TypeScript in strict mode. No dead code, no speculative abstractions.
 - Do not push, tag, force-push or change repository settings without explicit
   confirmation from the owner.
